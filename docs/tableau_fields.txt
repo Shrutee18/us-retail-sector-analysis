@@ -1,0 +1,61 @@
+Calculated fields used in the Tableau workbook "retail-sector-analysis"
+Data source: data/clean/retail_financials_wide.csv (one row per company and year)
+
+Retailer
+CASE [Ticker]
+WHEN 'WMT' THEN 'Walmart'
+WHEN 'TGT' THEN 'Target'
+WHEN 'COST' THEN 'Costco'
+WHEN 'KR' THEN 'Kroger'
+WHEN 'HD' THEN 'Home Depot'
+WHEN 'LOW' THEN "Lowe's"
+WHEN 'BBY' THEN 'Best Buy'
+WHEN 'DG' THEN 'Dollar General'
+END
+
+Gross Margin
+(SUM([Revenue]) - SUM([Cost Of Revenue])) / SUM([Revenue])
+
+Operating Margin
+SUM([Operating Income]) / SUM([Revenue])
+
+Net Margin
+SUM([Net Income]) / SUM([Revenue])
+
+Capex % Revenue
+SUM([Capex]) / SUM([Revenue])
+
+Inventory Turnover
+SUM([Cost Of Revenue]) / SUM([Inventory])
+
+Days Of Inventory
+365 / [Inventory Turnover]
+
+Revenue Base 2019
+{FIXED [Ticker] : SUM(IF [Calendar Year] = 2019 THEN [Revenue] END)}
+
+Revenue Index
+100 * SUM([Revenue]) / MAX([Revenue Base 2019])
+
+Revenue Growth 2019 to 2025
+SUM(IF [Calendar Year] = 2025 THEN [Revenue] END) / SUM(IF [Calendar Year] = 2019 THEN [Revenue] END) - 1
+
+Margin Change 2019 to 2025 (points)
+100 * (
+  SUM(IF [Calendar Year] = 2025 THEN [Operating Income] END)
+  / SUM(IF [Calendar Year] = 2025 THEN [Revenue] END)
+  -
+  SUM(IF [Calendar Year] = 2019 THEN [Operating Income] END)
+  / SUM(IF [Calendar Year] = 2019 THEN [Revenue] END)
+)
+
+Notes
+- Calendar Year labels fiscal years: year-ends in January to June count as the previous calendar year.
+- Kroger's cost of revenue excludes depreciation and its inventory is derived (FIFO inventory minus LIFO reserve), so its gross margin and inventory turnover are the least comparable.
+- Inventory turnover uses year-end inventory, not the yearly average.
+
+Highlight Flag (only if you built the dropdown)
+IF [Highlight retailer] = 'None' THEN [Retailer]
+ELSEIF [Retailer] = [Highlight retailer] THEN [Retailer]
+ELSE 'Others'
+END
