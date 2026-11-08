@@ -2,7 +2,7 @@
 
 An analysis of eight US retailers (Walmart, Target, Costco, Kroger, Home Depot, Lowe's, Best Buy and Dollar General) over seven fiscal years, from their annual reports (Form 10-K). A Python script collects the figures from the SEC's public EDGAR data, and the analysis and dashboards are built in Tableau Public.
 
-**Live dashboards and story:** [ADD TABLEAU PUBLIC LINK HERE]
+**Live dashboards and story:** https://public.tableau.com/app/profile/shruti.sulke/viz/retail-sector-analysis/1overview?publish=yes
 
 ![Overview](docs/overview.png)
 
